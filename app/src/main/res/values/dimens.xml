@@ -7,4 +7,9 @@
     <dimen name="general_margin">16dp</dimen>
     <dimen name="text_size">18sp</dimen>
     <dimen name="normal_text">16sp</dimen>
+    <dimen name="margin_card">6dp</dimen>
+    <dimen name="radio_card">5dp</dimen>
+    <dimen name="width_button">80dp</dimen>
+    <dimen name="height_button">40dp</dimen>
+    <dimen name="action_text">12sp</dimen>
 </resources>

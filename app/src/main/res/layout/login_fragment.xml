@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/username"
-        android:layout_marginBottom="@dimen/general_margin"/>
+        android:layout_marginBottom="@dimen/general_margin" />
 
     <EditText
         android:id="@+id/et_mail"
@@ -25,7 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
-        android:layout_marginBottom="@dimen/general_margin"/>
+        android:layout_marginBottom="@dimen/general_margin"
+        android:inputType="textPassword"/>
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -54,5 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="send"
-        android:layout_gravity="center"/>
+        android:textColor="@color/color_white"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/button_color"/>
 </LinearLayout>
