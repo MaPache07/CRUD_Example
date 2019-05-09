@@ -25,7 +25,7 @@ class UpdateActivity : AppCompatActivity(), LoginFragment.OnSendListener {
         supportFragmentManager.beginTransaction().replace(R.id.content_update, update).commit()
     }
 
-    override fun setOnSendListener() {
+    override fun setOnSendListener(username : String, email : String, password : String, male : Boolean, female : Boolean) {
         if(et_username.text.toString() == "" || et_mail.text.toString() == "" || et_password.text.toString() == "" || (!radio_male.isChecked && !radio_female.isChecked)) {
             var toast = Toast.makeText(this, "Ingrese todos los datos", Toast.LENGTH_SHORT);
             toast.show()

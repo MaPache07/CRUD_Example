@@ -17,6 +17,7 @@ class ListFragment : Fragment() {
 
     lateinit var users : ArrayList<User>
     var click : OnClickListener? = null
+    lateinit var adapter : UserAdapter
 
     interface OnClickListener{
 
@@ -45,12 +46,14 @@ class ListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.list_fragment, container, false)
-        view.list_fragment_rv.adapter = UserAdapter(users, {user : User -> click?.SetOnUpdateListener(user)}, {user : User -> click?.SetOnDeleteListener(user)})
+        adapter = UserAdapter(users, {user : User -> click?.SetOnUpdateListener(user)}, {user : User -> click?.SetOnDeleteListener(user)})
+        view.list_fragment_rv.adapter = adapter
         val linearLayoutManager = LinearLayoutManager(this.context)
         view.list_fragment_rv.apply {
             setHasFixedSize(true)
             layoutManager = linearLayoutManager
         }
+
         return view
     }
 

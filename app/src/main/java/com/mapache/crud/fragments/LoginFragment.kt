@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.mapache.crud.R
 import com.mapache.crud.models.User
+import kotlinx.android.synthetic.main.login_fragment.*
 import kotlinx.android.synthetic.main.login_fragment.view.*
 import java.lang.Exception
 
@@ -18,7 +19,7 @@ class LoginFragment : Fragment() {
     var user : User? = null
 
     interface OnSendListener{
-        fun setOnSendListener()
+        fun setOnSendListener(username : String, email : String, password : String, male : Boolean, female : Boolean)
     }
 
     companion object{
@@ -39,7 +40,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.login_fragment, container, false)
-        view.action_send.setOnClickListener{click?.setOnSendListener()}
+        view.action_send.setOnClickListener{click?.setOnSendListener(et_username.text.toString(), et_mail.text.toString(), et_password.text.toString(), radio_male.isChecked, radio_female.isChecked)}
 
         if(user != null){
             view.action_send.text = "update"

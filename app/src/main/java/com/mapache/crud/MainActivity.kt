@@ -20,13 +20,14 @@ class MainActivity : AppCompatActivity(), LoginFragment.OnSendListener, ListFrag
 
     var flag = 0
     var dbHelper = Database(this)
-    var login = LoginFragment()
+    lateinit var login : LoginFragment
     var arrayUsers = ArrayList<User>()
     lateinit var list : ListFragment
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
+                login = LoginFragment()
                 supportFragmentManager.beginTransaction().replace(R.id.content_main, login).commit()
                 flag = 0
             }
@@ -100,26 +101,29 @@ class MainActivity : AppCompatActivity(), LoginFragment.OnSendListener, ListFrag
         return 0
     }
 
-    override fun setOnSendListener() {
-        if(et_username.text.toString() == "" || et_mail.text.toString() == "" || et_password.text.toString() == "" || (!radio_male.isChecked && !radio_female.isChecked)){
+    override fun setOnSendListener(username : String, email : String, password : String, male : Boolean, female : Boolean) {
+        if(username == "" || email == "" || password == "" || (male && female)){
             var toast = Toast.makeText(this, "Ingrese todos los datos", Toast.LENGTH_SHORT);
             toast.show()
         } else{
             var gender = ""
-            if(radio_male.isChecked) gender = "Male"
-            if(radio_female.isChecked) gender = "Female"
+            if(male) gender = "Male"
+            if(female) gender = "Female"
             val db = dbHelper?.writableDatabase
             val id = initArrayOrIndexOfUser(true)
             val values = ContentValues().apply {
                 put(DatabaseContract.UserEntry.COLUMN_ID, id)
-                put(DatabaseContract.UserEntry.COLUMN_NAME, et_username.text.toString())
-                put(DatabaseContract.UserEntry.COLUMN_MAIL, et_mail.text.toString())
-                put(DatabaseContract.UserEntry.COLUMN_PASSWORD, et_password.text.toString())
+                put(DatabaseContract.UserEntry.COLUMN_NAME, username) //et_username.text.toString()
+                put(DatabaseContract.UserEntry.COLUMN_MAIL, email)
+                put(DatabaseContract.UserEntry.COLUMN_PASSWORD, password)
                 put(DatabaseContract.UserEntry.COLUMN_GENDER, gender)
             }
             db?.insert(DatabaseContract.UserEntry.TABLE_NAME, null, values)
-            var user = User(id, et_username.text.toString(), et_mail.text.toString(), et_password.text.toString(), gender)
+            var user = User(id, username, email, password, gender)
             arrayUsers.add(user)
+            login = LoginFragment()
+            supportFragmentManager.beginTransaction().replace(R.id.content_main, login).commit()
+
         }
     }
 
@@ -141,14 +145,14 @@ class MainActivity : AppCompatActivity(), LoginFragment.OnSendListener, ListFrag
         val db = dbHelper.writableDatabase
         db.execSQL("DELETE FROM ${DatabaseContract.UserEntry.TABLE_NAME} WHERE ${DatabaseContract.UserEntry.COLUMN_ID} = ${user.id}")
         arrayUsers.remove(user)
-        list = ListFragment.newInstance(arrayUsers)
-        supportFragmentManager.beginTransaction().replace(R.id.content_main, list).commit()
+        list.adapter.notifyDataSetChanged()
     }
 
     fun selectedItem(){
         when (flag){
             0 -> {
                 nav_view.selectedItemId = R.id.navigation_home
+                login = LoginFragment()
                 supportFragmentManager.beginTransaction().replace(R.id.content_main, login).commit()
             }
             1 -> {
